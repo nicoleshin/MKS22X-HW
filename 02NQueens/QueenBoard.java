@@ -11,19 +11,14 @@ public class QueenBoard {
         QueenBoard nine = new QueenBoard(9);
         QueenBoard ten = new QueenBoard(10);
         four.solve();
-        five.solve();
-        six.solve();
-        seven.solve();
-        eight.solve();
-        nine.solve();
-        ten.solve();
         System.out.println(four);
-        System.out.println(five);
-        System.out.println(six);
-        System.out.println(seven);
-        System.out.println(eight);
-        System.out.println(nine);
-        System.out.println(ten);
+        System.out.println("-------------" + four.getCount());
+        //System.out.println("-------------" + five.getCount());
+        //System.out.println("-------------" + six.getCount());
+        //System.out.println(seven.getCount());
+        //System.out.println(eight.getCount());
+        //System.out.println(nine.getCount());
+        //System.out.println(ten.getCount());
     }
 
     private char[][] board;
@@ -38,6 +33,7 @@ public class QueenBoard {
     }
 
     public boolean solve() {
+        queenCoords.clear();
         return solveH(0);
     }
 
@@ -46,7 +42,7 @@ public class QueenBoard {
             return true;
         } else {
             for (int row = 0; row < boardSize; row++) {
-                if (queenCoords.size() > col*2) {
+                while (queenCoords.size() > col*2) {
                     queenCoords.remove(queenCoords.size()-1);
                     queenCoords.remove(queenCoords.size()-1);
                 }
@@ -74,6 +70,32 @@ public class QueenBoard {
         return true;
     }
 
+    public int getCount() {
+        queenCoords.clear();
+        solutionCount = 0;
+        getCountH(0,0);
+        return solutionCount;
+    }
+
+    private void getCountH(int row, int col) {
+        if (queenCoords.size() == boardSize*2) {
+            solutionCount++;
+        } else {
+            int counter = 0;
+            for (int r = row; r < boardSize; r++) {
+                while (queenCoords.size() > col*2) {
+                    queenCoords.remove(queenCoords.size()-1);
+                    queenCoords.remove(queenCoords.size()-1);
+                }
+                if (isValidMove(r, col)) {
+                    queenCoords.add(r);
+                    queenCoords.add(col);
+                    getCountH(0,col+1);
+                }
+            }
+        }
+    }
+
     public String toString(){
         updateBoard();
         String ret = "";
@@ -98,14 +120,6 @@ public class QueenBoard {
     }
 
     public int getSolutionCount(){
-        return -1;
-    }
-
-    public int getCount() {
-        return getCountH(0,0);
-    }
-
-    private int getCountH(int row, int col) {
-        return -1;
+        return solutionCount;
     }
 }
