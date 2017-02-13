@@ -12,13 +12,13 @@ public class QueenBoard {
         QueenBoard ten = new QueenBoard(10);
         four.solve();
         System.out.println(four);
-        System.out.println("-------------" + four.getCount());
-        //System.out.println("-------------" + five.getCount());
-        //System.out.println("-------------" + six.getCount());
-        //System.out.println(seven.getCount());
-        //System.out.println(eight.getCount());
-        //System.out.println(nine.getCount());
-        //System.out.println(ten.getCount());
+        System.out.println("-------------" + four.getSolutionCount());
+        System.out.println("-------------" + five.getSolutionCount());
+        System.out.println("-------------" + six.getSolutionCount());
+        System.out.println(seven.getSolutionCount());
+        System.out.println(eight.getSolutionCount());
+        System.out.println(nine.getSolutionCount());
+        System.out.println(ten.getSolutionCount());
     }
 
     private char[][] board;
@@ -30,6 +30,7 @@ public class QueenBoard {
         boardSize = size;
         board = new char[size][size];
         queenCoords = new ArrayList<Integer>(0);
+        solutionCount = -1;
     }
 
     public boolean solve() {
@@ -70,11 +71,10 @@ public class QueenBoard {
         return true;
     }
 
-    public int getCount() {
+    public int getSolutionCount() {
         queenCoords.clear();
-        solutionCount = 0;
         getCountH(0,0);
-        return solutionCount;
+        return solutionCount + 1;
     }
 
     private void getCountH(int row, int col) {
@@ -117,9 +117,5 @@ public class QueenBoard {
         for (int i = 0; i < queenCoords.size(); i+=2) {
             board[queenCoords.get(i)][queenCoords.get(i+1)] = 'Q';
         }
-    }
-
-    public int getSolutionCount(){
-        return solutionCount;
     }
 }
