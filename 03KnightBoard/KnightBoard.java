@@ -1,5 +1,14 @@
 public class KnightBoard {
 
+    public static void main(String[] args) {
+        KnightBoard four = new KnightBoard(4);
+        KnightBoard five = new KnightBoard(5);
+        four.solve();
+        five.solve();
+        System.out.println(four);
+        System.out.println(five);
+    }
+
     private int rows, cols, totalSquares;
     private int[][] board;
 
@@ -22,61 +31,42 @@ public class KnightBoard {
     }
 
     private boolean solveH(int r, int c, int level) {
-        if (level == totalSquares) {
-            return true;
+        if (r >= rows || c >= cols || r < 0 || c < 0) {
+            return false;
         }
-        int[] nextMove = nextValidMove(r,c,0);
-        while (nextMove[0] != -1) {
-            solveH(nextMove[0], nextMove[1], level+1);
-            nextMove = nextValidMove(r,c,nextMove[2]);
+        if (board[r][c] == 0) {
+            board[r][c] = level;
+            if (level == totalSquares) {
+                return true;
+            } else if (solveH(r+2, c+1, level+1) ||
+            solveH(r+2, c-1, level+1) ||
+            solveH(r-2, c+1, level+1) ||
+            solveH(r-2, c-1, level+1) ||
+            solveH(r+1, c+2, level+1) ||
+            solveH(r+1, c-2, level+1) ||
+            solveH(r-1, c+2, level+1) ||
+            solveH(r-1, c-2, level+1)) {
+                return true;
+            } else {
+                board[r][c] = 0;
+                return false;
+            }
         }
         return false;
     }
 
-    private int[] nextValidMove(int r, int c, int start) {
-        for (int i = start; i < 8; i++) {
-            int[] temp = checkSpace(r,c,i);
-            if (temp[0] != -1) {
-                int[] ret = {temp[0], temp[1], i};
-                return ret;
-            }
-        }
-        int[] ret = {-1,-1,-1};
-        return ret;
-    }
-
-    private int[] checkSpace(int r, int c, int num) {
-        int[] ret = {-1,-1};
-        switch (num) {
-            case 0:
-                if (r-3 < rows && c-1 < cols) {
-                }
-            case 1:
-                if (r-3 < rows && c+1 < cols) {
-                }
-            case 2:
-                if (r+3 < rows && c-1 < cols) {
-                }
-            case 3:
-                if (r+3 < rows && c+1 < cols) {
-                }
-            case 4:
-                if (c-3 < rows && r-1 < cols) {
-                }
-            case 5:
-                if (c-3 < rows && r+1 < cols) {
-                }
-            case 6:
-                if (c+3 < rows && r-1 < cols) {
-                }
-            case 7:
-                if (c+3 < rows && r+1 < cols) {
-                }
-        }
-        return ret;
-    }
-
     public String toString() {
-        return "";
+        String ret = "";
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c] < 10) {
+                    ret += "  " + board[r][c];
+                } else {
+                    ret += " " + board[r][c];
+                }
+            }
+            ret += "\n";
+        }
+        return ret;
     }
 }
