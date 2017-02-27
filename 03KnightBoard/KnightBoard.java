@@ -2,7 +2,7 @@ public class KnightBoard {
 
     public static void main(String[] args) {
         KnightBoard four = new KnightBoard(4);
-        KnightBoard five = new KnightBoard(5);
+        KnightBoard five = new KnightBoard(6);
         four.solve();
         five.solve();
         System.out.println(four);
@@ -38,7 +38,8 @@ public class KnightBoard {
             board[r][c] = level;
             if (level == totalSquares) {
                 return true;
-            } else if (solveH(r+2, c+1, level+1) ||
+            }
+            if (solveH(r+2, c+1, level+1) ||
             solveH(r+2, c-1, level+1) ||
             solveH(r-2, c+1, level+1) ||
             solveH(r-2, c-1, level+1) ||
