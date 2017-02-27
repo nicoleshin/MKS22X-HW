@@ -1,12 +1,13 @@
 public class KnightBoard {
 
     public static void main(String[] args) {
-        KnightBoard four = new KnightBoard(60);
-        //KnightBoard five = new KnightBoard(60);
-        four.solveFast();
-        //five.solve();
-        System.out.println(four);
-        //System.out.println(five);
+        /*
+        for (int i=10; i<131; i++) {
+            KnightBoard k = new KnightBoard(i);
+            k.solveFast();
+            System.out.println(i);
+        }
+        */
     }
 
     private int rows, cols, totalSquares;
@@ -36,9 +37,12 @@ public class KnightBoard {
     }
 
     public void solveFast() {
+        int numOfIterations = 0;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
+                numOfIterations++;
                 if (solveH(r,c,1)) {
+                    //System.out.println("PASS, " + numOfIterations);
                     return;
                 } else {
                     clearBoard();
@@ -54,7 +58,6 @@ public class KnightBoard {
         }
         int index = getBestMove(r,c);
         if (index == -1) {
-            System.out.println(this);
             return false;
         }
         return solveH(r+MOVES_INDEX[index][0], c+MOVES_INDEX[index][1], level+1);
@@ -96,8 +99,12 @@ public class KnightBoard {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (board[r][c] < 10) {
+                    ret += "    " + board[r][c];
+                } else if (board[r][c] < 100){
+                    ret += "   " + board[r][c];
+                } else if (board[r][c] < 1000){
                     ret += "  " + board[r][c];
-                } else {
+                } else { 
                     ret += " " + board[r][c];
                 }
             }
