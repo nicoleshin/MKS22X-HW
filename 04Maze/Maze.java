@@ -22,7 +22,6 @@ public class Maze {
     private int[] start;
 
     public Maze(String filename){
-        // fix this later oh god
         animate = true;
         maze = new char[100][100];
         start = new int[2];
@@ -78,7 +77,7 @@ public class Maze {
     public boolean solve(){
         //Initialize starting row and startint col with
         //the location of the S. 
-        maze[start[0]][start[1]] = ' ';//erase the S, and start solving!
+        maze[start[0]][start[1]] = '@';//erase the S, and start solving!
         System.out.println(start[0]+","+start[1]);
         return solveH(start[0],start[1]);
     }
@@ -89,7 +88,6 @@ public class Maze {
 
     private boolean temp(int r, int c) {
         if (maze[r][c] == 'E') {
-            maze[r][c] = '!';
             return true;
         }
         if (!isValidMove(r,c)) {
@@ -107,9 +105,8 @@ public class Maze {
     private boolean solveH(int r, int c){
         if(animate){
             System.out.println("\033[2J\033[1;1H"+this);
-            wait(200);
+            wait(300);
         }
-        // COMPLETE SOLVE
         return temp(r+1,c) || temp(r-1,c) || temp(r,c+1) || temp(r,c-1);
     }
 
