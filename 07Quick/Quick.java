@@ -1,37 +1,64 @@
 public class Quick {
 
     public static int quickselect(int[] data, int k) {
-        k = k-1;
-        int start, end;
-        start = 0;
-        end = data.length-1;
-        int pivotIndex = part(data, start, end);
-        while (pivotIndex != k) {
-            print(data);
-            if (pivotIndex > k) {
-                end = pivotIndex-1;
-            } else {
-                start = pivotIndex+1;
-            }
-            pivotIndex = part(data, start, end);
-        }
-        return data[pivotIndex];
+        return selectPart(data, 0, data.length-1, k);
     }
 
-    public static int part(int[] data, int start, int end) {
+    public static int selectPart(int[] data, int start, int end, int k) {
         int pivotPoint = (int) ((end - start + 1) * Math.random() + start);
         int pivot = data[pivotPoint];
-        System.out.println("Pivot: " + pivot);
-        swap(data, pivotPoint, end);
-        int wall = start;
-        for (int i = start; i <= end; i++) {
-            if (data[i] < pivot) {
-                swap(data, wall, i);
-                wall++;
+        swap(data, pivotPoint, start);
+        int i = start;
+        int greaterWall = end;
+        int lesserWall = start;
+        while (i <= greaterWall) {
+            if (data[i] == pivot) {
+                i++;
+            } else if (data[i] < pivot) {
+                swap(data, i, lesserWall);
+                lesserWall++;
+                i++;
+            } else {
+                swap(data, i, greaterWall);
+                greaterWall--;
             }
         }
-        swap(data, wall, end);
-        return wall;
+        if (k > greaterWall) {
+            return selectPart(data, greaterWall, end, k);
+        } else if (k < lesserWall) {
+            return selectPart(data, start, lesserWall, k);
+        } else {
+            return pivot;
+        }
+    }
+
+    public static void quicksort(int[] data) {
+        sortPart(data, 0, data.length-1);
+    }
+
+    public static void sortPart(int[] data, int start, int end) {
+        if (end-start > 1) {
+            int pivotPoint = (int) ((end - start + 1) * Math.random() + start);
+            int pivot = data[pivotPoint];
+            swap(data, pivotPoint, start);
+            int i = start;
+            int greaterWall = end;
+            int lesserWall = start;
+            while (i <= greaterWall) {
+                if (data[i] == pivot) {
+                    i++;
+                } else if (data[i] < pivot) {
+                    swap(data, i, lesserWall);
+                    lesserWall++;
+                    i++;
+                } else {
+                    swap(data, i, greaterWall);
+                    greaterWall--;
+                }
+            }
+            sortPart(data, start, lesserWall);
+            sortPart(data, greaterWall, end);
+        }
     }
 
     public static void swap(int[] data, int a, int b) {
@@ -41,14 +68,16 @@ public class Quick {
     }
 
     public static void main(String[] args) {
-        int[] ary = new int[]{5, 7, 1, 3, 4, 2, 6, 0};
+        int[] ary = new int[]{5,1,5,2,5,5,3,5,7,5};
+        System.out.println(quickselect(ary, ary.length-1));
+        quicksort(ary);
         print(ary);
-        System.out.println(quickselect(ary,4));
     }
 
     public static void print(int[] ary) {
         for (int i = 0; i < ary.length; i++) {
             System.out.print(ary[i] + ", ");
         }
+        System.out.println();
     }
 }
