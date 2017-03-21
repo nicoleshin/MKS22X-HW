@@ -2,25 +2,6 @@ import java.util.ArrayList;
 
 public class QueenBoard {
 
-    public static void main(String[] args) {
-        QueenBoard four = new QueenBoard(4);
-        QueenBoard five = new QueenBoard(5);
-        QueenBoard six = new QueenBoard(6);
-        QueenBoard seven = new QueenBoard(7);
-        QueenBoard eight = new QueenBoard(8);
-        QueenBoard nine = new QueenBoard(9);
-        QueenBoard ten = new QueenBoard(10);
-        four.solve();
-        System.out.println(four);
-        System.out.println("-------------" + four.getSolutionCount());
-        System.out.println("-------------" + five.getSolutionCount());
-        System.out.println("-------------" + six.getSolutionCount());
-        System.out.println(seven.getSolutionCount());
-        System.out.println(eight.getSolutionCount());
-        System.out.println(nine.getSolutionCount());
-        System.out.println(ten.getSolutionCount());
-    }
-
     private char[][] board;
     private int boardSize;
     private int solutionCount;
