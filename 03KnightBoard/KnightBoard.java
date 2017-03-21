@@ -1,14 +1,5 @@
 public class KnightBoard {
 
-    public static void main(String[] args) {
-        KnightBoard four = new KnightBoard(4);
-//        KnightBoard five = new KnightBoard(6,7);
-        four.solve();
-//        five.solve();
-        System.out.println(four);
-//        System.out.println(five);
-    }
-
     private int rows, cols, totalSquares;
     private int[][] board;
 

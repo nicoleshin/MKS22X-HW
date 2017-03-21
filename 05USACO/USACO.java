@@ -5,12 +5,6 @@ import java.io.FileNotFoundException;
 
 public class USACO {
 
-    public static void main(String[] args) {
-        USACO x = new USACO();
-        System.out.println(x.silver("ctravel/ctravel.2.in"));
-        System.out.println(x);
-    }
-
     private int[][] grid;
     private int rows;
     private int cols;

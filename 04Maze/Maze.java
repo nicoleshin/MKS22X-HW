@@ -3,20 +3,6 @@ import java.io.*;
 
 public class Maze {
 
-    public static void main(String[] args) {
-        Maze m = new Maze("data1.dat");
-        m.solve();
-        System.out.println(m);
-        /*
-        m = new Maze("data2.dat");
-        m.solve();
-        System.out.println(m);
-        */
-        m = new Maze("data3.dat");
-        m.solve();
-        System.out.println(m);
-    }
-
     private char[][] maze;
     private boolean animate;
     private int[] start;
