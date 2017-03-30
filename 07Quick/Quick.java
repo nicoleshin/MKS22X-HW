@@ -67,12 +67,16 @@ public class Quick {
         data[b] = temp;
     }
 
+/*
     public static void main(String[] args) {
-        int[] ary = new int[]{5,1,5,2,5,5,3,5,7,5};
-        System.out.println(quickselect(ary, ary.length-1));
+        int[] ary = new int[500];
+        for (int i=0; i<500; i++) {
+            ary[i] = i;
+        }
         quicksort(ary);
         print(ary);
     }
+*/
 
     public static void print(int[] ary) {
         for (int i = 0; i < ary.length; i++) {
