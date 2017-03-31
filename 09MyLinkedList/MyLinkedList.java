@@ -104,6 +104,10 @@ public class MyLinkedList {
     }
 
     public int get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("INDEX INVALID");
+        }
+
         LNode curr = start;
         for (int i = 0; i < index; i++) {
             curr = curr.getNext();
@@ -112,6 +116,10 @@ public class MyLinkedList {
     }
 
     public int set(int index, int newVal) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("INDEX INVALID");
+        }
+
         LNode curr = start;
         for (int i = 0; i < index; i++) {
             curr = curr.getNext();
