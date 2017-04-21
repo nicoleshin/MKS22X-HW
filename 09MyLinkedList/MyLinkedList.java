@@ -1,21 +1,32 @@
 import java.lang.IllegalArgumentException;
+import java.util.*;
 
-public class MyLinkedList {
-
+public class MyLinkedList implements Iterable<Integer> {
+/*
     public static void main(String[] args) {
         MyLinkedList l = new MyLinkedList();
         l.add(0);
+        System.out.println(l);
         l.add(1);
+        System.out.println(l);
         l.add(2);
+        System.out.println(l);
         l.add(4);
+        System.out.println(l);
         l.add(3, 3);
+        System.out.println(l);
         l.add(0, 100);
+        System.out.println(l);
         l.add(l.size(), 100);
         System.out.println(l);
         l.remove(3);
+        System.out.println("SHIT WORKS");
         System.out.println(l);
+        for (Integer i : l) {
+            System.out.println(i);
+        }
     }
-
+*/
     private LNode start, end;
     private int size;
 
@@ -29,28 +40,35 @@ public class MyLinkedList {
         end = start;
     }
 
-    public int indexOf(int value) {
-        LNode curr = start;
-        int index = 0;
-        for (int i = 0; i < size; i++) {
-            if (curr.getValue() == value) {
-                return index;
+    private LNode getNode(int index) {
+        LNode curr;
+        if (index < size/2) {
+            curr = start;
+            for (int i = 0; i < index; i++) {
+                curr = curr.next;
             }
-            curr = curr.getNext();
-            index++;
+        } else {
+            curr = end;
+            for (int i = size-1; i > index; i--) {
+                curr = curr.previous;
+                System.out.print(i-1+",");
+                System.out.println(curr.value);
+            }
         }
-        return -1;
+        return curr;
     }
 
-    public void add(int val) {
-        if (size == 0) {
-            start.setValue(val);
-        } else {
-            LNode n = new LNode(val);
-            end.setNext(n);
-            end = n;
-        }
-        size++;
+    private void addAfter(LNode location, LNode toBeAdded) {
+        LNode after = location.next;
+        after.setPrevious(toBeAdded);
+        toBeAdded.setNext(after);
+        toBeAdded.setPrevious(location);
+        location.setNext(toBeAdded);
+    }
+
+    public boolean add(int val) {
+        add(size, val);
+        return true;
     }
 
     public void add(int index, int val) {
@@ -59,23 +77,41 @@ public class MyLinkedList {
         }
 
         LNode n = new LNode(val);
-        if (index == 0) {
-            n.setNext(start);
+        if (size == 0) {
             start = n;
-            size++;
+            end = n;
+        } else if (index == 0) {
+            n.setNext(start);
+            start.setPrevious(n);
+            start = n;
         } else if (index == size) {
-            add(val);
+            end.setNext(n);
+            n.setPrevious(end);
+            end = n;
         } else {
-            LNode curr = start;
-            LNode prev = null;
-            for (int i = 0; i < index; i++) {
-                prev = curr;
-                curr = curr.getNext();
-            }
-            prev.setNext(n);
-            n.setNext(curr);
-            size++;
+            addAfter(getNode(index-1), n);
         }
+        size++;
+    }
+
+    public int indexOf(int value) {
+        LNode curr = start;
+        int index = 0;
+        for (int i = 0; i < size; i++) {
+            if (curr.value == value) {
+                return index;
+            }
+            curr = curr.next;
+            index++;
+        }
+        return -1;
+    }
+
+    private void removeNode(LNode node) {
+        LNode after = node.next;
+        LNode before = node.previous;
+        after.setPrevious(before);
+        before.setNext(after);
     }
 
     public int remove(int index) {
@@ -83,54 +119,44 @@ public class MyLinkedList {
             throw new IllegalArgumentException("INDEX INVALID");
         }
 
-        LNode curr = start;
-        if (index == 0) {
-            start = start.getNext();
+        LNode node = getNode(index);
+        System.out.println(node.value);
+        if (index == size-1) {
+            end.previous.setNext(null);
+            end = end.previous;
+        } else if (index == 0) {
+            start.next.setPrevious(null);
+            start = start.next;
         } else {
-            LNode prev = null;
-            for (int i = 0; i < index; i++) {
-                prev = curr;
-                curr = curr.getNext();
-            }
-            if (index == size-1) {
-                prev.setNext(null);
-                end = prev;
-            } else {
-                prev.setNext(curr.getNext());
-            }
+            removeNode(node);
         }
         size--;
-        return curr.getValue();
+        return node.value;
     }
 
     public int get(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("INDEX INVALID");
         }
-
-        LNode curr = start;
-        for (int i = 0; i < index; i++) {
-            curr = curr.getNext();
-        }
-        return curr.getValue();
+        return getNode(index).value;
     }
 
     public int set(int index, int newVal) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("INDEX INVALID");
         }
-
-        LNode curr = start;
-        for (int i = 0; i < index; i++) {
-            curr = curr.getNext();
-        }
-        int temp = curr.getValue();
-        curr.setValue(newVal);
+        LNode n = getNode(index);
+        int temp = n.value;
+        n.setValue(newVal);
         return temp;
     }
 
     public int size() {
         return size;
+    }
+
+    public Iterator<Integer> iterator() {
+        return new LIterator(this);
     }
 
     public String toString() {
@@ -140,22 +166,51 @@ public class MyLinkedList {
         String ret = "[";
         LNode curr = start;
         for (int i = 0; i < size; i++) {
-            System.out.println(curr.getValue());
-            ret += curr.getValue() + ",";
-            curr = curr.getNext();
+            ret += curr.value + ",";
+            curr = curr.next;
         }
         return ret.substring(0, ret.length()-1) + "]";
     }
 
-    private class LNode {
-        LNode next, previous;
-        int value;
-        public LNode(int v) {
-            this(v, null);
+    private class LIterator implements Iterator<Integer> {
+        private MyLinkedList list;
+        private LNode current;
+
+        public LIterator(MyLinkedList l) {
+            list = l;
+            current = l.start;
         }
 
-        public LNode(int v, LNode n) {
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public Integer next() {
+            if (hasNext()) {
+                int v = current.value;
+                current = current.next;
+                return v;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    private class LNode {
+        private LNode next, previous;
+        private int value;
+
+        public LNode(int v) {
+            this(v, null, null);
+        }
+
+        public LNode(int v, LNode n, LNode p) {
             next = n;
+            previous = p;
             value = v;
         }
 
@@ -163,16 +218,12 @@ public class MyLinkedList {
             next = n;
         }
 
+        public void setPrevious(LNode p) {
+            previous = p;
+        }
+
         public void setValue(int v) {
             value = v;
-        }
-
-        public LNode getNext() {
-            return next;
-        }
-
-        public int getValue() {
-            return value;
         }
     }
 }
