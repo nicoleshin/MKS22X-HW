@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class ExpressionTree{
     private char op;
     private double value;
@@ -47,36 +49,12 @@ public class ExpressionTree{
     public static void main(String[] args){
         ExpressionTree a = new ExpressionTree(4.0);
         ExpressionTree b = new ExpressionTree(2.0);
-
         ExpressionTree c = new ExpressionTree('+',a,b);
-        System.out.println(c);
-        System.out.println(c.toStringPostfix());
-        System.out.println(c.toStringPrefix());
-        System.out.println(c.evaluate());
-
         ExpressionTree d = new ExpressionTree('*',c,new ExpressionTree(3.5));
-        System.out.println(d);
-        System.out.println(d.toStringPostfix());
-        System.out.println(d.toStringPrefix());
-        System.out.println(d.evaluate());
-
         ExpressionTree ex = new ExpressionTree('-',d,new ExpressionTree(1.0));
-        System.out.println(ex);
-        System.out.println(ex.toStringPostfix());
-        System.out.println(ex.toStringPrefix());
-        System.out.println(ex.evaluate());
-
-        ex = new ExpressionTree('+',new ExpressionTree(1.0),ex);
-        System.out.println(ex);
-        System.out.println(ex.toStringPostfix());
-        System.out.println(ex.toStringPrefix());
-        System.out.println(ex.evaluate());
-
-        ex = new ExpressionTree('/',ex,new ExpressionTree(2.0));
-        System.out.println(ex);
-        System.out.println(ex.toStringPostfix());
-        System.out.println(ex.toStringPrefix());
-        System.out.println(ex.evaluate());
+        ExpressionTree f = new ExpressionTree('/', ex, d);
+        System.out.println(f.toStringPostfix());
+        System.out.println(postfixToTree(f.toStringPostfix()).toStringPostfix());
     }
 
     /*return the expression as an infix notation string with
@@ -101,7 +79,7 @@ public class ExpressionTree{
             ret = getValue() + "";
         } else {
             // Operator
-            ret = getLeft().toStringPostfix() + " " + getRight().toStringPrefix() + " ";
+            ret = getLeft().toStringPostfix() + " " + getRight().toStringPostfix() + " ";
             ret += getOp() + "";
         }
         return ret;
@@ -151,7 +129,8 @@ public class ExpressionTree{
         Stack<ExpressionTree> trees = new Stack<ExpressionTree>();
         for (String str : tokens) {
             if (isOperator(str)) {
-                ExpressionTree t = new ExpressionTree(str.charAt(0), trees.pop(), trees.pop());
+                ExpressionTree et = trees.pop();
+                ExpressionTree t = new ExpressionTree(str.charAt(0), trees.pop(), et);
                 trees.push(t);
             } else {
                 trees.push(new ExpressionTree(Double.parseDouble(str)));
