@@ -17,24 +17,18 @@ public class ExpressionTree{
         right = r;
     }
 
-
-
     public char getOp(){
         return op;
     }
 
-    /* accessor method for Value, precondition is that isValue() is
-     * true.*/
     private double getValue(){
         return value;
     }
-    /* accessor method for left, precondition is that isOp() is
-     * true.*/
+
     private ExpressionTree getLeft(){
         return left;
     }
-    /* accessor method for right, precondition is that isOp() is
-     * true.*/
+
     private ExpressionTree getRight(){
         return right;
     }
@@ -49,7 +43,6 @@ public class ExpressionTree{
     private boolean hasChildren(){
         return left != null && right != null;
     }
-
 
     public static void main(String[] args){
         ExpressionTree a = new ExpressionTree(4.0);
@@ -152,4 +145,22 @@ public class ExpressionTree{
         }
     }
 
+    // untested
+    public static ExpressionTree postfixToTree(String s) {
+        String[] tokens = s.split(" ");
+        Stack<ExpressionTree> trees = new Stack<ExpressionTree>();
+        for (String str : tokens) {
+            if (isOperator(str)) {
+                ExpressionTree t = new ExpressionTree(str.charAt(0), trees.pop(), trees.pop());
+                trees.push(t);
+            } else {
+                trees.push(new ExpressionTree(Double.parseDouble(str)));
+            }
+        }
+        return trees.pop();
+    }
+
+    private static boolean isOperator(String s) {
+        return s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("%");
+    }
 }
