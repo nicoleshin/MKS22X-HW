@@ -123,10 +123,10 @@ public class MazeSolver {
                     int startC = board.getStart().getC();
                     int endR = board.getEnd().getR();
                     int endC = board.getEnd().getC();
-                    starQueue.add(new Location(row,col+1,Math.abs(endR-row) + Math.abs(endC-col+1),Math.abs(endR-row) + Math.abs(endC-col+1)));
-                    starQueue.add(new Location(row,col-1,Math.abs(endR-row) + Math.abs(endC-col-1),Math.abs(endR-row) + Math.abs(endC-col-1)));
-                    starQueue.add(new Location(row+1,col,Math.abs(endR-row+1) + Math.abs(endC-col),Math.abs(endR-row+1) + Math.abs(endC-col)));
-                    starQueue.add(new Location(row-1,col,Math.abs(endR-row-1) + Math.abs(endC-col),Math.abs(endR-row-1) + Math.abs(endC-col)));
+                    starQueue.add(new Location(row,col+1,Math.abs(startR-row) + Math.abs(startC-col+1),Math.abs(endR-row) + Math.abs(endC-col+1)));
+                    starQueue.add(new Location(row,col-1,Math.abs(startR-row) + Math.abs(startC-col-1),Math.abs(endR-row) + Math.abs(endC-col-1)));
+                    starQueue.add(new Location(row+1,col,Math.abs(startR-row+1) + Math.abs(startC-col),Math.abs(endR-row+1) + Math.abs(endC-col)));
+                    starQueue.add(new Location(row-1,col,Math.abs(startR-row-1) + Math.abs(startC-col),Math.abs(endR-row-1) + Math.abs(endC-col)));
                 }
             } catch (IndexOutOfBoundsException e) {
                 current = starQueue.next();
